@@ -6,12 +6,11 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
 class Charts extends React.Component {
-  constructor(props){
-    super(props);
+    constructor(props){
+        super(props);
   this.state = {
       currencies: [],
       chartCurrency: 0,
-
     dataLine: {
       labels: [],
       datasets: [
@@ -40,19 +39,20 @@ class Charts extends React.Component {
     }
   };
 }
-getCurrencyFromApi = async (data,filledArrayWithCurrency) => {
-    const response = await fetch(`http://data.fixer.io/api/${data}?access_key=6771539900770fdac8abae8d533455cd&format=1`)
+  getCurrencyFromApi = async (data,filledArrayWithCurrency) => {
+    const response = await fetch(`http://data.fixer.io/api/${data}?access_key=838b6140d1075b2d6b49abad2db20d43`)
+    
     const json = await response.json();
       this.setState({ 
           currencies: json.rates, 
       })
     
-      Object.keys(this.state.currencies).map((name) => this.props.nameOfCurrency === name ? this.setState({ chartCurrency: 1/this.props.convertFromChart * this.state.currencies[name] }) : {name} )
+      Object.keys(this.state.currencies).map((name) => this.props.nameOfCurrency === name ? this.setState({ chartCurrency: this.state.currencies[name] }) : {name} )
       filledArrayWithCurrency.push(this.state.chartCurrency)
       console.log(filledArrayWithCurrency)
-}
+    }
   
-setInitialLabelArray = async () => {
+   setInitialLabelArray = async () => {
     var today  = new Date()
     var filledArray = [];
     var filledArrayWithCurrency = [];
@@ -64,8 +64,8 @@ setInitialLabelArray = async () => {
     console.log(today)
     for(let i=0; i<=10; i++)
     { 
+
       let dateFill = today
-      
       console.log(dateFill)
       dateFill = dateFill.toISOString().slice(0,10);
       filledArray[i] = dateFill;
@@ -106,7 +106,8 @@ setInitialLabelArray = async () => {
   });
 }
 
-render() {
+  render() {
+    
     return (
       <MDBContainer>
         <h3 className="mt-5">Line chart</h3>

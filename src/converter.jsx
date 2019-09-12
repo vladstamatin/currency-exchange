@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css'
 import DropdownList from './dropdown.jsx'
 import Charts from './chart';
-// simple currency converter using an Api 
+// Currency converter
 
 class Converter extends React.Component {
 constructor(){
@@ -24,9 +24,9 @@ constructor(){
     componentDidMount() {
         this.newDate()
         console.log(this.state.datefix)
-        fetch(`http://data.fixer.io/api/${this.state.datefix}?access_key=6771539900770fdac8abae8d533455cd&format=1`)
-        .then(response => response.json())
-        .then((json) =>
+        fetch(`http://data.fixer.io/api/${this.state.datefix}?access_key=838b6140d1075b2d6b49abad2db20d43`)
+      .then(response => response.json())
+      .then((json) =>
       {
         console.log(json);
         this.setState({ 
@@ -45,8 +45,15 @@ constructor(){
         )
         console.log(this.state.convertFrom) 
     }
-
+    newDate = () => {
+        var today  = new Date();
+        today = today.toISOString().slice(0,10);
+        this.setState({
+            datefix: today
+        })
+    }
     handleSelectTo = (e) => {
+        
         this.setState({
             convertTo: e.target.value,
         })
@@ -59,17 +66,9 @@ constructor(){
 
     convertValues = (resultOfConvert) => {
         resultOfConvert = ((this.state.amount)/(this.state.convertFrom)) * (this.state.convertTo)
-            this.setState({
-                result: resultOfConvert
-            });
-    }
-
-    newDate = () => {
-        var today  = new Date();
-        today = today.toISOString().slice(0,10);
-            this.setState({
-                datefix: today
-            })
+        this.setState({
+            result: resultOfConvert
+        });
     }
 
     handleAmountInput = (e) => {
@@ -94,11 +93,10 @@ constructor(){
                 <div className="resultSection">    
                     <h3>{this.state.amount} {this.state.convertFromName} is equal {(this.state.result).toFixed(4)} {this.state.convertToName}</h3>
                 </div>
-                    <Charts 
-                    convertFromChart={this.state.convertFrom}
-                    nameOfCurrency={this.state.convertToName}/>
+                    <Charts nameOfCurrency={this.state.convertToName}/>
             </div> 
                 );
             }
 }
+ 
 export default Converter;
